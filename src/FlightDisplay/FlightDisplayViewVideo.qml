@@ -50,9 +50,9 @@ Item {
         }
         MouseArea {
             anchors.fill: parent
-            onDoubleClicked: {
-                QGroundControl.videoManager.fullScreen = !QGroundControl.videoManager.fullScreen
-            }
+            // onDoubleClicked: {
+            //     QGroundControl.videoManager.fullScreen = !QGroundControl.videoManager.fullScreen
+            // }
         }
     }
     Rectangle {
@@ -178,9 +178,9 @@ Item {
         //-- Full screen toggle
         MouseArea {
             anchors.fill: parent
-            onDoubleClicked: {
-                QGroundControl.videoManager.fullScreen = !QGroundControl.videoManager.fullScreen
-            }
+            // onDoubleClicked: {
+            //     QGroundControl.videoManager.fullScreen = !QGroundControl.videoManager.fullScreen
+            // }
         }
         //-- Zoom
         PinchArea {

@@ -52,7 +52,7 @@ Item {
     property bool   _enforceChecklist:              _useChecklist && QGroundControl.settingsManager.appSettings.enforceChecklist.rawValue
     property bool   _checklistComplete:             activeVehicle && (activeVehicle.checkListState === Vehicle.CheckListPassed)
     property real   _margins:                       ScreenTools.defaultFontPixelWidth / 2
-    property real   _pipSize:                       mainWindow.width * 0.2
+    property real   _pipSize:                       mainWindow.width * 0.6
     property alias  _guidedController:              guidedActionsController
     property alias  _altitudeSlider:                altitudeSlider
     property real   _toolsMargin:                   ScreenTools.defaultFontPixelWidth * 0.75

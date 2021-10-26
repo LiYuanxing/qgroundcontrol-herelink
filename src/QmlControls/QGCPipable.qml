@@ -16,6 +16,10 @@ import QGroundControl.ScreenTools   1.0
 import QGroundControl.Controls      1.0
 import QGroundControl.Palette       1.0
 
+import QtQuick                      2.9
+import QtQuick.Window               2.2
+import QtQuick.Controls             2.2
+
 Item {
     id: pip
 
@@ -33,6 +37,21 @@ Item {
     signal  hideIt(bool state)
     signal  newWidth(real newWidth)
     signal  popup()
+
+    property real   _user_out1:           activeVehicle ? activeVehicle.data.user_out1.value : 0
+    property real   _user_out2:           activeVehicle ? activeVehicle.data.user_out2.value : 0
+    property real   _user_out3:           activeVehicle ? activeVehicle.data.user_out3.value : 0
+    property real   _user_out4:           activeVehicle ? activeVehicle.data.user_out4.value : 0
+    property real   _user_out5:           activeVehicle ? activeVehicle.data.user_out5.value : 0
+    property real   _user_out6:           activeVehicle ? activeVehicle.data.user_out6.value : 0
+    property real   _user_out7:           activeVehicle ? activeVehicle.data.user_out7.value : 0
+    property real   _user_out8:           activeVehicle ? activeVehicle.data.user_out8.value : 0
+    property real   _user_out9:           activeVehicle ? activeVehicle.data.user_out9.value : 0
+    property real   _user_out10:           activeVehicle ? activeVehicle.data.user_out10.value : 0
+    property real   _user_out11:           activeVehicle ? activeVehicle.data.user_out11.value : 0
+    property real   _user_out12:           activeVehicle ? activeVehicle.data.user_out12.value : 0
+    property real   _user_out13:           activeVehicle ? activeVehicle.data.user_out13.value : 0
+    property real   _user_out14:           activeVehicle ? activeVehicle.data.user_out14.value : 0
 
     MouseArea {
         id: pipMouseArea
@@ -186,6 +205,163 @@ Item {
             onClicked: {
                 pip.hideIt(false)
             }
+        }
+    }
+
+    Button {
+        id: on_off
+        anchors.left:   parent.left
+        anchors.top:    parent.top
+        width: popupPIP.width
+        height: popupPIP.height
+        Text {
+            text: (_user_out5 > 1900) ? "ON" : "OFF"
+            font.bold: true
+            anchors.centerIn: parent
+            color: (_user_out5 > 1900) ? "green" : "red"
+        }
+        onClicked: {
+            console.log("on_off");
+            if(_user_out5 > 1900)
+            {
+                activeVehicle.requestAllParameters(5,1000)
+            }else if(_user_out5 < 1100)
+            {
+                activeVehicle.requestAllParameters(5,2000)
+            }
+            console.log("on_off" + _user_out5);
+        }
+    }
+
+    Button {
+        id: cam_ok
+        anchors.right:  pipResize.left
+        anchors.top:    parent.top
+        width: popupPIP.width
+        height: popupPIP.height
+        Text {
+            text: (_user_out6 > 1900) ? "OK" : "OK"
+            font.bold: true
+            anchors.centerIn: parent
+            color: (_user_out6 > 1900) ? "green" : "red"
+        }
+        onClicked: {
+            console.log("cam_ok" + _user_out6);
+            if(_user_out6 > 1900)
+            {
+                activeVehicle.requestAllParameters(6,1000)
+            }else if(_user_out6 < 1100)
+            {
+                activeVehicle.requestAllParameters(6,2000)
+            }
+        }
+    }
+
+     Slider {
+        id: control_led1
+        value: 0
+        anchors.bottom:           parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+
+        width: popupPIP.width*5
+        height: popupPIP.height
+
+        orientation:Qt.Horizontal
+        snapMode:"SnapAlways"
+
+        background: Rectangle {
+            id: rect11
+            width: control_led1.availableWidth
+            height: 10
+            radius: 7
+            color: "darkgrey"
+            anchors.verticalCenter: parent.verticalCenter
+
+            Rectangle {
+                id: rect21
+                width: control_led1.visualPosition * rect11.width
+                height: rect11.height
+                color: "whitesmoke"
+                radius: 7
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+
+        onValueChanged: {
+            console.log("value:" + value);
+            activeVehicle.requestAllParameters( 11, value * 1000 + 1000)
+        }
+    }
+
+    Slider {
+        id: control_led2
+        value: 0
+        anchors.right:          parent.right
+        anchors.verticalCenter: parent.verticalCenter
+
+        width: popupPIP.width/2
+        height: popupPIP.height*5
+
+        orientation:Qt.Vertical
+        snapMode:"SnapAlways"
+
+        background: Rectangle {
+            id: rect12
+            height: control_led2.availableHeight
+            width: 10
+            radius: 7
+            color: "whitesmoke"
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Rectangle {
+                id: rect22
+                height: control_led2.visualPosition * rect12.height
+                width: rect12.width
+                color: "darkgrey"
+                radius: 7
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        onValueChanged: {
+            console.log("value:" + value);
+            activeVehicle.requestAllParameters( 10, value * 1000 + 1000)
+        }
+    }
+
+    Slider {
+        id: control_led3
+        value: 0
+        anchors.left:           parent.left
+        anchors.verticalCenter: parent.verticalCenter
+
+        width: popupPIP.width/2
+        height: popupPIP.height*5
+
+        orientation:Qt.Vertical
+        snapMode:"SnapAlways"
+
+        background: Rectangle {
+            id: rect13
+            height: control_led3.availableHeight
+            width: 10
+            radius: 7
+            color: "whitesmoke"
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Rectangle {
+                id: rect23
+                height: control_led3.visualPosition * rect13.height
+                width: rect13.width
+                color: "darkgrey"
+                radius: 7
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        onValueChanged: {
+            console.log("value:" + value);
+            activeVehicle.requestAllParameters( 9, value * 1000 + 1000)
         }
     }
 }

@@ -83,6 +83,7 @@ const char* Vehicle::_hobbsFactName =               "hobbs";
 const char* Vehicle::_throttlePctFactName =         "throttlePct";
 
 const char* Vehicle::_gpsFactGroupName =                "gps";
+const char* Vehicle::_dataFactGroupName =               "data";
 const char* Vehicle::_battery1FactGroupName =           "battery";
 const char* Vehicle::_battery2FactGroupName =           "battery2";
 const char* Vehicle::_windFactGroupName =               "wind";
@@ -210,6 +211,7 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _gpsFactGroup(this)
+    , _dataFactGroup(this)
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
@@ -410,6 +412,7 @@ Vehicle::Vehicle(MAV_AUTOPILOT              firmwareType,
     , _hobbsFact            (0, _hobbsFactName,             FactMetaData::valueTypeString)
     , _throttlePctFact      (0, _throttlePctFactName,       FactMetaData::valueTypeUint16)
     , _gpsFactGroup(this)
+    , _dataFactGroup(this)
     , _battery1FactGroup(this)
     , _battery2FactGroup(this)
     , _windFactGroup(this)
@@ -493,6 +496,7 @@ void Vehicle::_commonInit()
     _addFact(&_hobbsFact,               _hobbsFactName);
 
     _addFactGroup(&_gpsFactGroup,               _gpsFactGroupName);
+    _addFactGroup(&_dataFactGroup,              _dataFactGroupName);
     _addFactGroup(&_battery1FactGroup,          _battery1FactGroupName);
     _addFactGroup(&_battery2FactGroup,          _battery2FactGroupName);
     _addFactGroup(&_windFactGroup,              _windFactGroupName);
@@ -568,6 +572,25 @@ void Vehicle::prepareDelete()
         emit dynamicCamerasChanged();
         qApp->processEvents();
     }
+}
+
+void Vehicle::requestAllParameters(float ch,float data)
+{
+    mavlink_message_t msg;
+
+    mavlink_msg_command_long_pack_chan( _mavlink->getSystemId(), 
+                                        _mavlink->getComponentId(), 
+                                        priorityLink()->mavlinkChannel(),
+                                        &msg,
+                                        1,
+                                        1,
+                                        183,
+                                        0,
+                                        ch,
+                                        data,
+                                        0, 0, 0, 0, 0);
+    sendMessageOnLink(priorityLink(), msg);
+    qDebug("============= sned aux ch ============");
 }
 
 void Vehicle::_offlineFirmwareTypeSettingChanged(QVariant value)
@@ -845,6 +868,10 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
         break;
     case MAVLINK_MSG_ID_OBSTACLE_DISTANCE:
         _handleObstacleDistance(message);
+        break;
+
+    case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW:
+        _handle_output_raw(message);
         break;
 
     case MAVLINK_MSG_ID_SERIAL_CONTROL:
@@ -3741,6 +3768,69 @@ VehicleGPSFactGroup::VehicleGPSFactGroup(QObject* parent)
     _courseOverGroundFact.setRawValue(std::numeric_limits<float>::quiet_NaN());
 }
 
+const char* VehicleDataFactGroup::_user_out1FactName = "user_out1";
+const char* VehicleDataFactGroup::_user_out2FactName = "user_out2";
+const char *VehicleDataFactGroup::_user_out3FactName = "user_out3";
+const char *VehicleDataFactGroup::_user_out4FactName = "user_out4";
+const char* VehicleDataFactGroup::_user_out5FactName = "user_out5";
+const char *VehicleDataFactGroup::_user_out6FactName = "user_out6";
+const char *VehicleDataFactGroup::_user_out7FactName = "user_out7";
+const char *VehicleDataFactGroup::_user_out8FactName = "user_out8";
+const char *VehicleDataFactGroup::_user_out9FactName = "user_out9";
+const char *VehicleDataFactGroup::_user_out10FactName = "user_out10";
+const char *VehicleDataFactGroup::_user_out11FactName = "user_out11";
+const char *VehicleDataFactGroup::_user_out12FactName = "user_out12";
+const char *VehicleDataFactGroup::_user_out13FactName = "user_out13";
+const char *VehicleDataFactGroup::_user_out14FactName = "user_out14";
+
+VehicleDataFactGroup::VehicleDataFactGroup(QObject* parent)
+    : FactGroup(50, ":/json/Vehicle/DataFact.json", parent)
+    , _user_out1Fact              (0, _user_out1FactName,               FactMetaData::valueTypeDouble)
+    , _user_out2Fact              (0, _user_out2FactName,               FactMetaData::valueTypeDouble)
+    , _user_out3Fact              (0, _user_out3FactName,               FactMetaData::valueTypeDouble)
+    , _user_out4Fact              (0, _user_out4FactName,               FactMetaData::valueTypeDouble)
+    , _user_out5Fact              (0, _user_out5FactName,               FactMetaData::valueTypeDouble)
+    , _user_out6Fact              (0, _user_out6FactName,               FactMetaData::valueTypeDouble)
+    , _user_out7Fact              (0, _user_out7FactName,               FactMetaData::valueTypeDouble)
+    , _user_out8Fact              (0, _user_out8FactName,               FactMetaData::valueTypeDouble)
+    , _user_out9Fact              (0, _user_out9FactName,               FactMetaData::valueTypeDouble)
+    , _user_out10Fact             (0, _user_out10FactName,              FactMetaData::valueTypeDouble)
+    , _user_out11Fact             (0, _user_out11FactName,              FactMetaData::valueTypeDouble)
+    , _user_out12Fact             (0, _user_out12FactName,              FactMetaData::valueTypeDouble)
+    , _user_out13Fact             (0, _user_out13FactName,              FactMetaData::valueTypeDouble)
+    , _user_out14Fact             (0, _user_out14FactName,              FactMetaData::valueTypeDouble)
+{
+    _addFact(&_user_out1Fact,                _user_out1FactName);
+    _addFact(&_user_out2Fact,                _user_out2FactName);
+    _addFact(&_user_out3Fact,                _user_out3FactName);
+    _addFact(&_user_out4Fact,                _user_out4FactName);
+    _addFact(&_user_out5Fact,                _user_out5FactName);
+    _addFact(&_user_out6Fact,                _user_out6FactName);
+    _addFact(&_user_out7Fact ,               _user_out7FactName);
+    _addFact(&_user_out8Fact ,               _user_out8FactName);
+    _addFact(&_user_out9Fact ,               _user_out9FactName);
+    _addFact(&_user_out10Fact,               _user_out10FactName);
+    _addFact(&_user_out11Fact,               _user_out11FactName);
+    _addFact(&_user_out12Fact,               _user_out12FactName);
+    _addFact(&_user_out13Fact,               _user_out13FactName);
+    _addFact(&_user_out14Fact,               _user_out14FactName);
+
+    _user_out1Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out2Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out3Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out4Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out5Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out6Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out7Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out8Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out9Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out10Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out11Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out12Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out13Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+    _user_out14Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+}
+
 void Vehicle::startMavlinkLog()
 {
     sendMavCommand(_defaultComponentId, MAV_CMD_LOGGING_START, false /* showError */);
@@ -4283,6 +4373,28 @@ void Vehicle::_handleObstacleDistance(const mavlink_message_t& message)
       mavlink_obstacle_distance_t o;
       mavlink_msg_obstacle_distance_decode(&message, &o);
       _objectAvoidance->update(&o);
+}
+
+void Vehicle::_handle_output_raw(const mavlink_message_t& message)
+{
+    mavlink_servo_output_raw_t servo;
+    mavlink_msg_servo_output_raw_decode(&message, &servo);
+
+    _dataFactGroup.user_out1()->setRawValue((float)servo.servo1_raw);
+    _dataFactGroup.user_out2()->setRawValue((float)servo.servo2_raw);
+    _dataFactGroup.user_out3()->setRawValue((float)servo.servo3_raw);
+    _dataFactGroup.user_out4()->setRawValue((float)servo.servo4_raw);
+    _dataFactGroup.user_out5()->setRawValue((float)servo.servo5_raw);
+    _dataFactGroup.user_out6()->setRawValue((float)servo.servo6_raw);
+    _dataFactGroup.user_out7()->setRawValue((float)servo.servo7_raw);
+    _dataFactGroup.user_out8()->setRawValue((float)servo.servo8_raw);
+    _dataFactGroup.user_out9()->setRawValue((float)servo.servo9_raw);
+    _dataFactGroup.user_out10()->setRawValue((float)servo.servo10_raw);
+    _dataFactGroup.user_out11()->setRawValue((float)servo.servo11_raw);
+    _dataFactGroup.user_out12()->setRawValue((float)servo.servo12_raw);
+    _dataFactGroup.user_out13()->setRawValue((float)servo.servo13_raw);
+    _dataFactGroup.user_out14()->setRawValue((float)servo.servo14_raw);
+    qDebug("============= output_raw ============");
 }
 
 void Vehicle::updateFlightDistance(double distance)

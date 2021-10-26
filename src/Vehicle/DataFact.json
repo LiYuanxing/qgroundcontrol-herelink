@@ -1,0 +1,75 @@
+[
+    {
+        "name":             "user_out1",
+        "shortDescription": "user_out1",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },
+    {
+        "name":             "user_out2",
+        "shortDescription": "user_out2",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out3",
+        "shortDescription": "user_out3",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out4",
+        "shortDescription": "user_out4",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out5",
+        "shortDescription": "user_out5",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out6",
+        "shortDescription": "user_out6",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out7",
+        "shortDescription": "user_out7",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out8",
+        "shortDescription": "user_out8",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out9",
+        "shortDescription": "user_out9",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out10",
+        "shortDescription": "user_out10",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out11",
+        "shortDescription": "user_out11",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out12",
+        "shortDescription": "user_out12",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out13",
+        "shortDescription": "user_out13",
+        "type":             "double",
+        "defaultValue":     "1000"
+    },{
+        "name":             "user_out14",
+        "shortDescription": "user_out14",
+        "type":             "double",
+        "defaultValue":     "1000"
+    }
+]
+    

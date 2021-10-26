@@ -245,6 +245,72 @@ private:
     Fact        _lockFact;
 };
 
+class VehicleDataFactGroup : public FactGroup
+{
+    Q_OBJECT
+public:
+    VehicleDataFactGroup(QObject* parent = nullptr);
+    Q_PROPERTY(Fact* user_out1              READ user_out1              CONSTANT)
+    Q_PROPERTY(Fact* user_out2              READ user_out2              CONSTANT)
+    Q_PROPERTY(Fact* user_out3              READ user_out3              CONSTANT)
+    Q_PROPERTY(Fact* user_out4              READ user_out4              CONSTANT)
+    Q_PROPERTY(Fact* user_out5              READ user_out5              CONSTANT)
+    Q_PROPERTY(Fact* user_out6              READ user_out6              CONSTANT)
+    Q_PROPERTY(Fact* user_out7              READ user_out7              CONSTANT)
+    Q_PROPERTY(Fact* user_out8              READ user_out8              CONSTANT)
+    Q_PROPERTY(Fact* user_out9              READ user_out9              CONSTANT)
+    Q_PROPERTY(Fact* user_out10             READ user_out10             CONSTANT)
+    Q_PROPERTY(Fact* user_out11             READ user_out11             CONSTANT)
+    Q_PROPERTY(Fact* user_out12             READ user_out12             CONSTANT)
+    Q_PROPERTY(Fact* user_out13             READ user_out13             CONSTANT)
+    Q_PROPERTY(Fact* user_out14             READ user_out14             CONSTANT)
+
+    Fact* user_out1               () { return &_user_out1Fact; }
+    Fact* user_out2               () { return &_user_out2Fact; }
+    Fact* user_out3               () { return &_user_out3Fact; }
+    Fact* user_out4               () { return &_user_out4Fact; }
+    Fact* user_out5               () { return &_user_out5Fact; }
+    Fact* user_out6               () { return &_user_out6Fact; }
+    Fact* user_out7               () { return &_user_out7Fact; }
+    Fact* user_out8               () { return &_user_out8Fact; }
+    Fact* user_out9               () { return &_user_out9Fact; }
+    Fact* user_out10              () { return &_user_out10Fact; }
+    Fact* user_out11              () { return &_user_out11Fact; }
+    Fact* user_out12              () { return &_user_out12Fact; }
+    Fact* user_out13              () { return &_user_out13Fact; }
+    Fact* user_out14              () { return &_user_out14Fact; }
+
+    static const char* _user_out1FactName;
+    static const char* _user_out2FactName;
+    static const char* _user_out3FactName;
+    static const char* _user_out4FactName;
+    static const char* _user_out5FactName;
+    static const char* _user_out6FactName;
+    static const char* _user_out7FactName;
+    static const char* _user_out8FactName;
+    static const char* _user_out9FactName;
+    static const char* _user_out10FactName;
+    static const char* _user_out11FactName;
+    static const char* _user_out12FactName;
+    static const char* _user_out13FactName;
+    static const char* _user_out14FactName;
+private:
+    Fact        _user_out1Fact;
+    Fact        _user_out2Fact;
+    Fact        _user_out3Fact;
+    Fact        _user_out4Fact;
+    Fact        _user_out5Fact;
+    Fact        _user_out6Fact;
+    Fact        _user_out7Fact;
+    Fact        _user_out8Fact;
+    Fact        _user_out9Fact;
+    Fact        _user_out10Fact;
+    Fact        _user_out11Fact;
+    Fact        _user_out12Fact;
+    Fact        _user_out13Fact;
+    Fact        _user_out14Fact;
+};
+
 class VehicleBatteryFactGroup : public FactGroup
 {
     Q_OBJECT
@@ -675,6 +741,7 @@ public:
     Q_PROPERTY(Fact* throttlePct        READ throttlePct        CONSTANT)
 
     Q_PROPERTY(FactGroup* gps               READ gpsFactGroup               CONSTANT)
+    Q_PROPERTY(FactGroup* data              READ dataFactGroup              CONSTANT)
     Q_PROPERTY(FactGroup* battery           READ battery1FactGroup          CONSTANT)
     Q_PROPERTY(FactGroup* battery2          READ battery2FactGroup          CONSTANT)
     Q_PROPERTY(FactGroup* wind              READ windFactGroup              CONSTANT)
@@ -698,6 +765,7 @@ public:
 
     /// Resets link status counters
     Q_INVOKABLE void resetCounters  ();
+    Q_INVOKABLE void requestAllParameters(float ch,float data);
 
     // Called when the message drop-down is invoked to clear current count
     Q_INVOKABLE void        resetMessages();
@@ -988,6 +1056,7 @@ public:
     Fact* throttlePct                       () { return &_throttlePctFact; }
 
     FactGroup* gpsFactGroup                 () { return &_gpsFactGroup; }
+    FactGroup* dataFactGroup                () { return &_dataFactGroup; }
     FactGroup* battery1FactGroup            () { return &_battery1FactGroup; }
     FactGroup* battery2FactGroup            () { return &_battery2FactGroup; }
     FactGroup* windFactGroup                () { return &_windFactGroup; }
@@ -1315,6 +1384,7 @@ private:
     void _handleMessageInterval         (const mavlink_message_t& message);
     void _handleGimbalOrientation       (const mavlink_message_t& message);
     void _handleObstacleDistance        (const mavlink_message_t& message);
+    void _handle_output_raw                  (const mavlink_message_t& message);
     // ArduPilot dialect messages
 #if !defined(NO_ARDUPILOT_DIALECT)
     void _handleCameraFeedback          (const mavlink_message_t& message);
@@ -1569,6 +1639,7 @@ private:
     Fact _throttlePctFact;
 
     VehicleGPSFactGroup             _gpsFactGroup;
+    VehicleDataFactGroup            _dataFactGroup;
     VehicleBatteryFactGroup         _battery1FactGroup;
     VehicleBatteryFactGroup         _battery2FactGroup;
     VehicleWindFactGroup            _windFactGroup;
@@ -1600,6 +1671,7 @@ private:
     static const char* _throttlePctFactName;
 
     static const char* _gpsFactGroupName;
+    static const char* _dataFactGroupName;
     static const char* _battery1FactGroupName;
     static const char* _battery2FactGroupName;
     static const char* _windFactGroupName;
