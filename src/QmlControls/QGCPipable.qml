@@ -208,6 +208,15 @@ Item {
         }
     }
 
+    Timer{
+        id:countDown;
+        interval: 500;
+        repeat: false;
+        onTriggered: {
+            activeVehicle.requestAllParameters(5,1000)
+        }
+    }
+
     Button {
         id: on_off
         anchors.left:   parent.left
@@ -215,21 +224,23 @@ Item {
         width: popupPIP.width
         height: popupPIP.height
         Text {
-            text: (_user_out5 > 1900) ? "ON" : "OFF"
+            text: "ON"
             font.bold: true
             anchors.centerIn: parent
-            color: (_user_out5 > 1900) ? "green" : "red"
         }
         onClicked: {
             console.log("on_off");
-            if(_user_out5 > 1900)
-            {
-                activeVehicle.requestAllParameters(5,1000)
-            }else if(_user_out5 < 1100)
-            {
-                activeVehicle.requestAllParameters(5,2000)
-            }
-            console.log("on_off" + _user_out5);
+            activeVehicle.requestAllParameters(5,2000)
+            countDown.start();
+        }
+    }
+
+    Timer{
+        id:countDown2;
+        interval: 500;
+        repeat: false;
+        onTriggered: {
+            activeVehicle.requestAllParameters(6,1000)
         }
     }
 
@@ -240,20 +251,14 @@ Item {
         width: popupPIP.width
         height: popupPIP.height
         Text {
-            text: (_user_out6 > 1900) ? "OK" : "OK"
+            text: "OK"
             font.bold: true
             anchors.centerIn: parent
-            color: (_user_out6 > 1900) ? "green" : "red"
         }
         onClicked: {
             console.log("cam_ok" + _user_out6);
-            if(_user_out6 > 1900)
-            {
-                activeVehicle.requestAllParameters(6,1000)
-            }else if(_user_out6 < 1100)
-            {
-                activeVehicle.requestAllParameters(6,2000)
-            }
+            activeVehicle.requestAllParameters(6,2000)
+            countDown2.start();
         }
     }
 
