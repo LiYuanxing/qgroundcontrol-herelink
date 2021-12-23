@@ -744,20 +744,20 @@ QObject* QGCApplication::_rootQmlObject()
 void QGCApplication::showMessage(const QString& message)
 {
     // PreArm messages are handled by Vehicle and shown in Map
-    if (message.startsWith(QStringLiteral("PreArm")) || message.startsWith(QStringLiteral("preflight"), Qt::CaseInsensitive)) {
-        return;
-    }
-    QObject* rootQmlObject = _rootQmlObject();
-    if (rootQmlObject) {
-        QVariant varReturn;
-        QVariant varMessage = QVariant::fromValue(message);
-        QMetaObject::invokeMethod(_rootQmlObject(), "showMessage", Q_RETURN_ARG(QVariant, varReturn), Q_ARG(QVariant, varMessage));
-    } else if (runningUnitTests()) {
-        // Unit tests can run without UI
-        qDebug() << "QGCApplication::showMessage unittest" << message;
-    } else {
-        qWarning() << "Internal error";
-    }
+    // if (message.startsWith(QStringLiteral("PreArm")) || message.startsWith(QStringLiteral("preflight"), Qt::CaseInsensitive)) {
+    //     return;
+    // }
+    // QObject* rootQmlObject = _rootQmlObject();
+    // if (rootQmlObject) {
+    //     QVariant varReturn;
+    //     QVariant varMessage = QVariant::fromValue(message);
+    //     QMetaObject::invokeMethod(_rootQmlObject(), "showMessage", Q_RETURN_ARG(QVariant, varReturn), Q_ARG(QVariant, varMessage));
+    // } else if (runningUnitTests()) {
+    //     // Unit tests can run without UI
+    //     qDebug() << "QGCApplication::showMessage unittest" << message;
+    // } else {
+    //     qWarning() << "Internal error";
+    // }
 }
 
 QQuickItem* QGCApplication::mainRootWindow()
